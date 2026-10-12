@@ -1,0 +1,273 @@
+body{
+background-color: aliceblue;
+
+} 
+h1{
+display: table;
+background-color: aliceblue;
+border-radius: 4px;
+margin: 0 auto;
+text-align: center;
+height: 10vh;
+}
+#Baby {
+    display: flex;
+    border-radius: 4px;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+    font-size: 32px;
+    background-color: white;
+    width: 60vh;
+    padding: 20px;
+    gap: 20px  ;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+#Baby input {
+    width: 300px;
+    height: 40px;
+    font-size: 18px;
+    padding: 10px;
+    border: 1px solid gray;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+#Baby button{
+font-size: 18px;
+
+}
+ #Jack input {
+    width: 300px;
+    height: 40px;
+    font-size: 18px;
+    padding: 10px;
+    border: 1px solid gray;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+.error-message {
+    font-size: 12px;
+    color: red;
+    margin: 5px 0;
+    text-align: center;
+    min-height: 15px;
+} 
+#Jill button{
+    font-size: 18px;
+    width: 300px;
+    height: 40px;
+    border-radius: 6px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+} 
+
+.dashboard-header {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+#Boy {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    margin: -15px auto 0;
+    font-size: 20px;
+    background-color: white;
+    border-radius: 4px
+}
+.review-btn {
+    display: block;
+    margin: 50px auto 0;
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    cursor: pointer;
+    width: 350px;
+    height: 100px;
+    font-size: 30px;
+}
+.mock-btn {
+    display: block;
+    margin: 50px auto 0;
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    cursor: pointer;
+    width: 350px;
+    height: 100px;
+    font-size: 30px;
+}
+.logout-btn {
+    display: block;
+    margin: 50px auto 0;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    cursor: pointer;
+    width: 350px;
+    height: 100px;
+    font-size: 30px;
+}
+ .review-page{
+    text-align: center;
+    font-size: 30px;
+    margin: 10px 0 30px;
+}
+.note-box {
+    width: 95vw;
+    height: 85vh;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+
+.notes-container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 25px;
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 15px;
+    box-sizing: border-box;
+}
+
+.notes-container h2 {
+    margin-top: 0;
+    color: #1e293b;
+}
+
+#note-title {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+#student-notes {
+    width: 100%;
+    height: 400px;
+    padding: 15px;
+    box-sizing: border-box;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    resize: vertical;
+}
+
+#save-notes {
+    margin-top: 15px;
+    padding: 12px 24px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#save-notes:hover {
+    background-color: #1d4ed8;
+}
+#see-saved-notes{
+    display: flex;
+    background-color: #1d4ed8;
+    color: white;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: fit-content;
+}
+#word {
+    text-align: center;
+}
+
+
+#bodynotes {
+    width: 90%;
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 25px;
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 15px;
+    box-sizing: border-box;
+}
+
+/* Inner box for the saved notes */
+.saved-notes-box {
+    width: 100%;
+    max-width: 850px;
+    margin: 25px auto;
+    padding: 20px;
+    background-color: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    box-sizing: border-box;
+    min-height: 200px;
+}
+
+#backtoreview{
+ display: flex;
+    background-color: #1d4ed8;
+    color: white;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: fit-content;
+
+}
+
+
+.saved-note-card {
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    overflow-wrap: anywhere;
+}
+
+.saved-note-card h2 {
+    color: #1e293b;
+    margin-top: 0;
+}
+
+.saved-note-card p {
+    color: #334155;
+    line-height: 1.6;
+}
+
+.delete-note-btn {
+    margin-top: 15px;
+    padding: 10px 18px;
+    background-color: #dc2626;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.delete-note-btn:hover {
+    background-color: #b91c1c;
+}
