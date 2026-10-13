@@ -1,18 +1,29 @@
 
+
 import express from "express";
 import {
     initializeApp,
-    applicationDefault
+    applicationDefault,
+    cert
 } from "firebase-admin/app";
 import {
     getFirestore,
     FieldValue
 } from "firebase-admin/firestore";
 
-initializeApp({
-    credential: applicationDefault(),
-    projectId: "ntelps"
-});
+const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
+
+if (serviceAccountJson) {
+    initializeApp({
+        credential: cert(JSON.parse(serviceAccountJson)),
+        projectId: "ntelps"
+    });
+} else {
+    initializeApp({
+        credential: applicationDefault(),
+        projectId: "ntelps"
+    });
+}
 
 const db = getFirestore();
 
@@ -21,6 +32,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json({ limit: "20kb" }));
 app.use(express.static("public"));
+
 
 // Student login: name + school ID.
 app.post("/api/login", async (req, res) => {
@@ -120,6 +132,95 @@ app.post("/api/tutor", async (req, res) => {
         });
     }
 });
+
+
+
+
+app.post("/api/notes", async (req, res) => {
+    try {
+        const { studentName, title, content } = req.body;
+
+        if (
+            typeof studentName !== "string" ||
+            typeof title !== "string" ||
+            typeof content !== "string" ||
+            !studentName.trim() ||
+            !title.trim() ||
+            !content.trim() ||
+            studentName.trim().length > 100 ||
+            title.trim().length > 200 ||
+            content.trim().length > 20000
+        ) {
+            return res.status(400).json({
+                error: "Please provide a valid name, title, and note content."
+            });
+        }
+
+        const docRef = await db.collection("student_notes").add({
+            studentName: studentName.trim(),
+            title: title.trim(),
+            content: content.trim(),
+            createdAt: FieldValue.serverTimestamp()
+        });
+
+        return res.status(201).json({
+            success: true,
+            id: docRef.id
+        });
+    } catch (error) {
+        console.error("Saving notes failed:", error.message);
+
+        return res.status(500).json({
+            error: "Could not save notes. Please try again."
+        });
+    }
+});
+
+
+app.get("/api/notes", async (req, res) => {
+    try {
+        const studentName = req.query.studentName;
+
+        if (
+            typeof studentName !== "string" ||
+            !studentName.trim() ||
+            studentName.trim().length > 100
+        ) {
+            return res.status(400).json({
+                error: "A valid student name is required."
+            });
+        }
+
+        const snapshot = await db.collection("student_notes")
+            .where("studentName", "==", studentName.trim())
+            .get();
+
+        const notes = snapshot.docs.map(doc => {
+            const data = doc.data();
+
+            return {
+                id: doc.id,
+                title: data.title,
+                content: data.content,
+                createdAt: data.createdAt
+                    ? data.createdAt.toDate().toLocaleString()
+                    : "Recently"
+            };
+        });
+
+        return res.json({ notes });
+    } catch (error) {
+        console.error("Loading notes failed:", error.message);
+
+        return res.status(500).json({
+            error: "Could not load saved notes."
+        });
+    }
+});
+
+
+
+
 
 // Start the web server.
 app.listen(PORT, () => {
