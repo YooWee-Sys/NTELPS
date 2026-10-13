@@ -1,15 +1,22 @@
-body{
-background-color: aliceblue;
 
-} 
-h1{
-display: table;
-background-color: aliceblue;
-border-radius: 4px;
-margin: 0 auto;
-text-align: center;
-height: 10vh;
+body {
+    background-color: aliceblue;
 }
+
+h1 {
+    display: table;
+    background-color: aliceblue;
+    border-radius: 4px;
+    margin: 0 auto;
+    text-align: center;
+    height: 10vh;
+}
+
+#welcome-message {
+    margin-right: 10px;
+}
+
+
 #Baby {
     display: flex;
     border-radius: 4px;
@@ -21,9 +28,19 @@ height: 10vh;
     background-color: white;
     width: 60vh;
     padding: 20px;
-    gap: 20px  ;
+    gap: 20px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
+
+.login-box {
+    width: 100%;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
 #Baby input {
     width: 300px;
     height: 40px;
@@ -32,29 +49,20 @@ height: 10vh;
     border: 1px solid gray;
     border-radius: 6px;
     box-sizing: border-box;
+    display: block;
+    margin: 10px auto;
 }
-#Baby button{
-font-size: 18px;
 
-}
- #Jack input {
-    width: 300px;
-    height: 40px;
+#Baby button {
     font-size: 18px;
-    padding: 10px;
-    border: 1px solid gray;
-    border-radius: 6px;
-    box-sizing: border-box;
 }
-.error-message {
-    font-size: 12px;
-    color: red;
-    margin: 5px 0;
+
+.input-submit {
     text-align: center;
-    min-height: 15px;
-} 
-#Jill button{
-    font-size: 18px;
+    margin-top: 15px;
+}
+
+.input-submit button {
     width: 300px;
     height: 40px;
     border-radius: 6px;
@@ -62,7 +70,19 @@ font-size: 18px;
     color: white;
     border: none;
     cursor: pointer;
-} 
+}
+
+.input-submit button:hover {
+    background-color: #45a049;
+}
+
+.error-message {
+    font-size: 12px;
+    color: red;
+    margin: 5px 0;
+    text-align: center;
+    min-height: 15px;
+}
 
 .dashboard-header {
     margin-bottom: 0;
