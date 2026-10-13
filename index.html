@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Next-Generation Learning Platform</title>
+    <title>NTELPS - Student Login</title>
     <link rel="stylesheet" href="design.css">
 </head>
 <body>
@@ -20,38 +20,48 @@
 
             <form id="login-form">
                 <div class="input-box">
+
                     <input
                         type="text"
                         id="student-name"
+                        name="studentName"
                         class="input-field"
                         placeholder="Student Name"
                         autocomplete="name"
+                        maxlength="100"
                         required
                     >
-<section id="Jack">
+
                     <input
-                        type="text";
+                        type="text"
                         id="student-id"
+                        name="schoolId"
                         class="input-field"
-                        placeholder="Student ID"
+                        placeholder="School ID"
+                        autocomplete="off"
+                        maxlength="50"
                         required
-                        inputmode="numeric"> 
-</section>
+                    >
+
                 </div>
-<section id="Jill">
+
                 <div class="input-submit">
                     <button type="submit" class="submit-btn">
                         Login
                     </button>
-                    </section>
-                    <p id="message" class="error-message"></p>
-                </div> 
-            </form>
+                </div>
 
-            <p id="message"></p>
+                <p
+                    id="message"
+                    class="error-message"
+                    role="status"
+                    aria-live="polite"
+                ></p>
+            </form>
 
         </div>
     </section>
-   <script src="script.js"></script>
+
+    <script src="login-auth.js"></script>
 </body>
 </html>
