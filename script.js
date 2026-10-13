@@ -85,121 +85,125 @@ if (logoutMessage && message) {
     sessionStorage.removeItem("logoutMessage");
 }
 
-const saveButton = document.getElementById("save-notes");
 
+const saveButton = document.getElementById("save-notes");
+const savedNotesList = document.getElementById("saved-notes-list");
+
+function getStudentName() {
+    return sessionStorage.getItem("studentName") || "";
+}
+
+// SAVE NOTES TO FIRESTORE THROUGH THE BACKEND
 if (saveButton) {
-    saveButton.addEventListener("click", function() {
+    saveButton.addEventListener("click", async function () {
         const titleInput = document.getElementById("note-title");
         const notesInput = document.getElementById("student-notes");
         const message = document.getElementById("notes-message");
 
         const title = titleInput.value.trim();
-        const notes = notesInput.value.trim();
+        const content = notesInput.value.trim();
+        const studentName = getStudentName();
 
-        if (!title || !notes) {
-            message.textContent =
-                "Please fill out the note title and notes before saving.";
+        if (!studentName) {
+            message.textContent = "Please log in first.";
             message.style.color = "red";
             return;
         }
 
-        const allNotes = JSON.parse(
-            localStorage.getItem("studentNotes") || "[]"
-        );
-
-        allNotes.push({
-            title: title,
-            content: notes,
-            date: new Date().toLocaleDateString()
-        });
-
-        localStorage.setItem(
-            "studentNotes",
-            JSON.stringify(allNotes)
-        );
-
-        message.textContent = "Your notes have been saved!";
-        message.style.color = "green";
-
-        titleInput.value = "";
-        notesInput.value = "";
-    });
-}
-
-
-
-
-const savedNotesList = document.getElementById("saved-notes-list");
-
-if (savedNotesList) {
-    const notesMessage = document.getElementById("notes-message");
-
-    function displaySavedNotes() {
-        savedNotesList.innerHTML = "";
-
-        const allNotes = JSON.parse(
-            localStorage.getItem("studentNotes") || "[]"
-        );
-
-        if (allNotes.length === 0) {
-            if (notesMessage) {
-                notesMessage.textContent = "You have no saved notes yet.";
-                notesMessage.style.color = "gray";
-            }
+        if (!title || !content) {
+            message.textContent = "Please enter both a title and notes.";
+            message.style.color = "red";
             return;
         }
 
-        if (notesMessage) {
-            notesMessage.textContent = "";
-        }
+        saveButton.disabled = true;
+        saveButton.textContent = "Saving...";
 
-        allNotes.forEach(function(note, index) {
-            const noteCard = document.createElement("div");
-            noteCard.className = "saved-note-card";
-
-            const noteTitle = document.createElement("h2");
-            noteTitle.textContent = note.title || "Untitled Note";
-
-            const noteContent = document.createElement("p");
-            noteContent.textContent = note.content || "";
-            noteContent.style.whiteSpace = "pre-wrap";
-
-            const noteDate = document.createElement("small");
-            noteDate.textContent = "Saved on: " + (note.date || "Unknown date");
-
-            const deleteButton = document.createElement("button");
-            deleteButton.textContent = "Delete Note";
-            deleteButton.className = "delete-note-btn";
-
-            deleteButton.addEventListener("click", function() {
-                const confirmed = confirm(
-                    'Are you sure you want to delete "' +
-                    (note.title || "Untitled Note") + '"?'
-                );
-
-                if (!confirmed) return;
-
-                const updatedNotes = JSON.parse(
-                    localStorage.getItem("studentNotes") || "[]"
-                );
-
-                updatedNotes.splice(index, 1);
-
-                localStorage.setItem(
-                    "studentNotes",
-                    JSON.stringify(updatedNotes)
-                );
-
-                displaySavedNotes();
+        try {
+            const response = await fetch("/api/notes", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    studentName,
+                    title,
+                    content
+                })
             });
 
-            noteCard.appendChild(noteTitle);
-            noteCard.appendChild(noteContent);
-            noteCard.appendChild(noteDate);
-            noteCard.appendChild(deleteButton);
+            const data = await response.json();
 
-            savedNotesList.appendChild(noteCard);
-        });
+            if (!response.ok || !data.success) {
+                throw new Error(data.error || "Could not save notes.");
+            }
+
+            message.textContent = "Notes saved successfully!";
+            message.style.color = "green";
+
+            titleInput.value = "";
+            notesInput.value = "";
+        } catch (error) {
+            message.textContent =
+                error.message || "Could not connect to the server.";
+            message.style.color = "red";
+        } finally {
+            saveButton.disabled = false;
+            saveButton.textContent = "Save Notes";
+        }
+    });
+}
+
+// LOAD SAVED NOTES FROM FIRESTORE THROUGH THE BACKEND
+if (savedNotesList) {
+    async function displaySavedNotes() {
+        savedNotesList.textContent = "Loading notes...";
+
+        try {
+            const studentName = getStudentName();
+
+            if (!studentName) {
+                savedNotesList.textContent = "Please log in to view your notes.";
+                return;
+            }
+
+            const response = await fetch(
+                "/api/notes?studentName=" + encodeURIComponent(studentName)
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || "Could not load notes.");
+            }
+
+            savedNotesList.replaceChildren();
+
+            if (!data.notes || data.notes.length === 0) {
+                savedNotesList.textContent = "You have no saved notes yet.";
+                return;
+            }
+
+            data.notes.forEach(function (note) {
+                const card = document.createElement("div");
+                card.className = "saved-note-card";
+
+                const title = document.createElement("h2");
+                title.textContent = note.title || "Untitled Note";
+
+                const content = document.createElement("p");
+                content.textContent = note.content || "";
+                content.style.whiteSpace = "pre-wrap";
+
+                const date = document.createElement("small");
+                date.textContent = "Saved on: " +
+                    (note.createdAt || "Recently");
+
+                card.append(title, content, date);
+                savedNotesList.appendChild(card);
+            });
+        } catch (error) {
+            savedNotesList.textContent =
+                error.message || "Could not load saved notes.";
+        }
     }
 
     displaySavedNotes();
